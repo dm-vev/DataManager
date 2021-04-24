@@ -1,0 +1,10 @@
+{
+	
+	"DefaultStorage": "./storage/",
+	"Host": "localhost",
+	"Port": 9087,
+	"Auth": false,
+	"Key": "ChangeItForUseAuth",
+	"Only_localhost": false
+	
+}
