@@ -24,18 +24,18 @@ Lib:
 
     print(dm.getCopy('MigrateExample'))
     
-Network:
-  Send commands as format over UDP protocol:
-  If auth need:
-    Auth key;Command arguments
-  If auth didnt need:
-    Command arguments
-  All commands:
-    new db_name
-    read db_name table
-    getCopy db_name
-    getValues db_name
-    migrate db_name db_name2
-    get db_name
-    save db_name
+Network:\n
+  Send commands as format over UDP protocol:\n
+  If auth need:\n
+    Auth key;Command arguments\n
+  If auth didnt need:\n
+    Command arguments\n
+  All commands:\n
+    new db_name\n
+    read db_name table\n
+    getCopy db_name\n
+    getValues db_name\n
+    migrate db_name db_name2\n
+    get db_name\n
+    save db_name\n
     load db_name
