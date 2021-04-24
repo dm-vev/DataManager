@@ -4,14 +4,16 @@ import json
 AuthNeed = False
 Host = "localhost"
 Port = 9087 
-keys = []
+key = ''
 def_path = (json.loads((open('server.json')).read()))['DefaultStorage']
+only_localhost = False
 
 def load_settings():
 	Sfile = open('server.json')
 	st = json.loads(Sfile.read())
-	keys = st['Key']
+	key = st['Key']
 	AuthNeed = st['Auth']
+	only_localhost = st['Only_localhost']
 	Sfile.close()
 
 class DMServer(socketserver.BaseRequestHandler):
@@ -116,8 +118,33 @@ class DMServer(socketserver.BaseRequestHandler):
 	def handle(self):
 		data = (self.request[0]).decode('UTF-32')
 		socket = self.request[1]
-		self.log(self.client_address[0]+' execute '+data)
-		socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
+		if AuthNeed:
+			com = data.split(';')
+			if com[0] == key:
+				if only_localhost:
+					if self.client_address[0] == '127.0.0.1' or self.client_address[0] == 'localhost':
+						self.log(self.client_address[0]+' execute '+data)
+						socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
+					else:
+						self.log(self.client_address[0]+' tried connect!')
+						socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+				else:
+					self.log(self.client_address[0]+' execute '+data)
+					socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
+			else:
+				self.log(self.client_address[0]+' failed auth!')
+				socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+		else:
+			if only_localhost:
+				if self.client_address[0] == '127.0.0.1' or self.client_address[0] == 'localhost':
+					self.log(self.client_address[0]+' execute '+data)
+					socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
+				else:
+					self.log(self.client_address[0]+' tried connect!')
+					socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+			else:
+				self.log(self.client_address[0]+' execute '+data)
+				socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
 
 if __name__ == "__main__":
 	print('[ DMServer ] :: Server started')
