@@ -1,6 +1,12 @@
 # DataManager
 Easy and faster python manage/storage data tool
 
+# Features
+Now in DM:
+- Speed
+- DataManager server
+- Native python support
+
 In develop:
   - Native MySQL client support
   - Plugin system for DMServer
