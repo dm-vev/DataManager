@@ -111,8 +111,13 @@ class DMServer(socketserver.BaseRequestHandler):
 		print('[ DMServer ] :: '+txt)
 	def execute(self, com):
 		command = com.split(' ')[0]
-		if command == 'new':
-			self.new(com.split(' ')[1])
+		Templates = Template()
+		if command == 'new':		
+			try:
+				templ = com.split(' ')[2]
+				self.new(com.split(' ')[1], template=templ)
+			except:
+				self.new(com.split(' ')[1])
 			return 'OK'
 		elif command == 'write':
 			self.write(com.split(' ')[1], com.split(' ')[2], com.split(' ')[3])
@@ -124,17 +129,30 @@ class DMServer(socketserver.BaseRequestHandler):
 			self.save(com.split(' ')[1])
 			return 'OK'
 		elif command == 'migrate':
-			self.save(com.split(' ')[1], com.split(' ')[2])
+			try:
+				templ = com.split(' ')[2]
+				self.migrate(com.split(' ')[1], com.split(' ')[2], createNew=True)
+			except:
+				self.migrate(com.split(' ')[1], com.split(' ')[2])
 			return 'OK'
 		elif command == 'read':
 			dt = self.read(com.split(' ')[1], com.split(' ')[2])
-			return 'OK:'+dt
+			return dt
 		elif command == 'getCopy':
 			dt = self.getCopy(com.split(' ')[1])
-			return 'OK:'+str(dt)
+			return str(dt)
 		elif command == 'getValues':
 			dt = self.getValues(com.split(' ')[1])
-			return 'OK:'+str(dt)
+			return str(dt)
+		elif command == 'newTemplate':
+			Templates.new(self.new(com.split(' ')[1]), self.new(com.split(' ')[2]))
+			return 'OK'
+		elif command == 'saveTemplate':
+			Templates.save(self.new(com.split(' ')[1]))
+			return 'OK'
+		elif command == 'saveTemplate':
+			Templates.load(self.new(com.split(' ')[1]))
+			return 'OK'
 	def handle(self):
 		data = (self.request[0]).decode('UTF-32')
 		socket = self.request[1]
