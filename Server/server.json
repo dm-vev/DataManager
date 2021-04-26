@@ -5,6 +5,7 @@
 	"Port": 9087,
 	"Auth": false,
 	"Key": "ChangeItForUseAuth",
-	"Only_localhost": false
+	"Only_localhost": false,
+	"TemplatesPath": './Templates'
 	
 }
