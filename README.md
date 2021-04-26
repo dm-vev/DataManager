@@ -6,7 +6,7 @@ Now in DM:
 - Speed
 - DataManager server
 - Native python support
-
+- Templates
 In develop:
   - Native MySQL client support
   - Plugin system for DMServer
