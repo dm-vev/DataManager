@@ -8,12 +8,31 @@ key = ''
 def_path = (json.loads((open('server.json')).read()))['DefaultStorage']
 only_localhost = False
 
+TemplatesPath = './Templates/'
+
+class Template():
+	templates = {'Default': {}}
+	def set(self, Template, name):
+		self.templates[name] = Template
+	def get(self, name):
+		return self.templates[name]
+	def save(self, name):
+		save = open(TemplatesPath+ name+'.json', 'w')
+		save.write(json.dumps(self.templates[name]))
+		save.close()
+	def load(self, name):
+		load = open(TemplatesPath+name+'.json')
+		dump = load.read()
+		load.close()
+		self.set(json.loads(dump), name)
+
 def load_settings():
 	Sfile = open('server.json')
 	st = json.loads(Sfile.read())
 	key = st['Key']
 	AuthNeed = st['Auth']
 	only_localhost = st['Only_localhost']
+	TemplatesPath = st['Templates']
 	Sfile.close()
 
 class DMServer(socketserver.BaseRequestHandler):
@@ -28,8 +47,9 @@ class DMServer(socketserver.BaseRequestHandler):
 				raise RuntimeError('Unkown value: '+str(value)+' in data table: '+str(db_name))
 		except:
 			raise RuntimeError('Unkown data table: '+str(db_name))
-	def new(self, db_name):
-		self.data[db_name] = {}
+	def new(self, db_name, template='Default'):
+		Templates = Template()
+		self.data[db_name] = Templates.get(template)
 	def write(self, db_name, value, new_value):
 		try:
 			db = self.data[db_name]
