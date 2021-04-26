@@ -6,6 +6,6 @@
 	"Auth": false,
 	"Key": "ChangeItForUseAuth",
 	"Only_localhost": false,
-	"TemplatesPath": './Templates'
+	"TemplatesPath": './Templates/'
 	
 }
