@@ -1,5 +1,21 @@
 import json
 
+class Template():
+	templates = {'Default': {}}
+	def set(self, Template, name):
+		self.templates[name] = Template
+	def get(self, name):
+		return self.templates[name]
+	def save(self, name):
+		save = open(name+'.json', 'w')
+		save.write(json.dumps(self.templates[name]))
+		save.close()
+	def load(self, name):
+		load = open(name+'.json')
+		dump = load.read()
+		load.close()
+		self.set(json.loads(dump), name)
+
 class DataManager():
 	data = {}
 	def read(self, db_name, value):
@@ -11,8 +27,9 @@ class DataManager():
 				raise RuntimeError('Unkown value: '+str(value)+' in data table: '+str(db_name))
 		except:
 			raise RuntimeError('Unkown data table: '+str(db_name))
-	def new(self, db_name):
-		self.data[db_name] = {}
+	def new(self, db_name, template='Default'):
+		Templates = Template()
+		self.data[db_name] = Templates.get(template)
 	def write(self, db_name, value, new_value):
 		try:
 			db = self.data[db_name]
