@@ -58,3 +58,9 @@ Network:
     save db_name
     
     load db_name
+    
+    newTemaplate string_template template name
+    
+    saveTemplate template_name
+    
+    loadTemplate template_name
