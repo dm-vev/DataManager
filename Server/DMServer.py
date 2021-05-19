@@ -7,6 +7,7 @@ Port = 9087
 key = ''
 def_path = (json.loads((open('server.json')).read()))['DefaultStorage']
 only_localhost = False
+PluginsEnabled = False
 
 TemplatesPath = './Templates/'
 
@@ -41,6 +42,7 @@ def load_settings():
 	AuthNeed = st['Auth']
 	only_localhost = st['Only_localhost']
 	TemplatesPath = st['Templates']
+	PluginsEnabled = st['Plugins']
 	Sfile.close()
 
 class DMServer(socketserver.BaseRequestHandler):
