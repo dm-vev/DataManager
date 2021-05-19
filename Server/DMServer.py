@@ -10,6 +10,14 @@ only_localhost = False
 
 TemplatesPath = './Templates/'
 
+class Plugin(self):
+    plugins = []
+    def event(self, event):
+        for plugin in self.plugins:
+            plugin.onEvent(event)
+    def regPlugin(self, plugin):
+        (self.plugins).append(plugin)
+
 class Template():
 	templates = {'Default': {}}
 	def set(self, Template, name):
