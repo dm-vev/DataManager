@@ -167,21 +167,25 @@ class DMServer(socketserver.BaseRequestHandler):
 		data = (self.request[0]).decode('UTF-32')
 		socket = self.request[1]
 		if AuthNeed:
-			com = data.split(';')
-			if com[0] == key:
-				if only_localhost:
-					if self.client_address[0] == '127.0.0.1' or self.client_address[0] == 'localhost':
+			try:
+				com = data.split(';')
+				if com[0] == key:
+					if only_localhost:
+						if self.client_address[0] == '127.0.0.1' or self.client_address[0] == 'localhost':
+							self.log(self.client_address[0]+' execute '+data)
+							socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
+						else:
+							self.log(self.client_address[0]+' tried connect!')
+							socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+					else:
 						self.log(self.client_address[0]+' execute '+data)
 						socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
-					else:
-						self.log(self.client_address[0]+' tried connect!')
-						socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
 				else:
-					self.log(self.client_address[0]+' execute '+data)
-					socket.sendto(((self.execute(data)).encode('UTF-32')), self.client_address)
-			else:
+					self.log(self.client_address[0]+' failed auth!')
+					socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+			except:
 				self.log(self.client_address[0]+' failed auth!')
-				socket.sendto(("FAILED").encode('UTF-32')), self.client_address)
+				socket.sendto(("FAILED_NEED_AUTH").encode('UTF-32')), self.client_address)
 		else:
 			if only_localhost:
 				if self.client_address[0] == '127.0.0.1' or self.client_address[0] == 'localhost':
