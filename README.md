@@ -9,9 +9,9 @@ Now in DM:
 - Templates
 
 In develop:
-  [ ]Native MySQL client support
-  [x]Plugin system for DMServer
-  [ ]Add user system for DMServer
+   - Native MySQL client support
+   - Plugin system for DMServer
+   - Add user system for DMServer
 
 # How it use?
 Lib:
